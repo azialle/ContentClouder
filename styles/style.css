@@ -1,0 +1,18 @@
+.title-accent {
+  color: #ff4b4b !important;
+  display: inline !important;
+  font-weight: 800 !important;
+}
+
+.title-main {
+  color: #ffffff !important;
+  display: inline !important;
+  font-weight: 800 !important;
+}
+
+.app-description {
+  font-size: 20px !important;
+  text-align: justify !important;
+  margin-bottom: 10px !important;
+  line-height: 1.5 !important;
+}
