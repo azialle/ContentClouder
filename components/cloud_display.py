@@ -1,6 +1,7 @@
 import streamlit as st
 
 def display_word_cloud(cloud_image=None):
+    st.subheader("Word Cloud Visualization")
     with st.container(border=True):
         if cloud_image is not None:
             st.image(cloud_image, width="stretch")
