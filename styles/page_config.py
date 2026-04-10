@@ -9,9 +9,9 @@ def page_config():
             st.markdown(f"<style>{file.read()}</style>", unsafe_allow_html=True)
 
     st.markdown("""
-        <h1>
+        <div class="title-container">
             <span class="title-accent">Content</span><span class="title-main">Clouder</span>
-        </h1>
+        </div>
         """, 
         unsafe_allow_html=True
     )
