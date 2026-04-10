@@ -1,18 +1,60 @@
+.title-container {
+  text-align: center !important;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
 .title-accent {
   color: #ff4b4b !important;
-  display: inline !important;
   font-weight: 800 !important;
+  font-size: 4rem;
+  align-items: center !important;
 }
 
 .title-main {
   color: #ffffff !important;
-  display: inline !important;
   font-weight: 800 !important;
+  font-size: 4rem;
+  align-items: center !important;
 }
 
 .app-description {
   font-size: 20px !important;
-  text-align: justify !important;
-  margin-bottom: 10px !important;
+  text-align: center !important;
+  margin-bottom: 20px !important;
   line-height: 1.5 !important;
+}
+
+.preview-text-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  min-height: 250px;
+}
+
+.preview-title {
+  font-size: 28px !important;
+  font-weight: 700;
+  margin-bottom: 8px !important;
+  line-height: 1.2;
+  margin-top: 0;
+}
+
+.preview-metadata {
+  font-size: 16px;
+  color: #bbb;
+  line-height: 1.6;
+}
+
+.word-cloud-placeholder {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 400px;
+  color: #888;
+  font-size: 1.2rem;
+  font-style: italic;
+  text-align: center;
+  width: 100%;
 }
