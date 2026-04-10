@@ -45,7 +45,7 @@ class YoutubeFetcher:
             }
         return metadata
 
-    def get_transcript(self):
+    def video_transcript(self):
         fetched_data = self.api.fetch(self.video_id)
         transcript_list = fetched_data.to_raw_data()
 
