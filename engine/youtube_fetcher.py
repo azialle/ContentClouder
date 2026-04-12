@@ -1,6 +1,6 @@
 from youtube_transcript_api import YouTubeTranscriptApi
-import re
 import yt_dlp
+import re
 from datetime import datetime, timedelta
 
 YT_ID_PATTERN = r"(?:v=|\/|be\/)([0-9A-Za-z_-]{11})"
@@ -8,19 +8,18 @@ YT_ID_PATTERN = r"(?:v=|\/|be\/)([0-9A-Za-z_-]{11})"
 class YoutubeFetcher:
     def __init__(self, url):
         self.url = url
-        self.api = YouTubeTranscriptApi()
         self.video_id = self._extract_video_id()
 
     def _extract_video_id(self):
         match = re.search(YT_ID_PATTERN, self.url)
         return match.group(1) if match else None
     
-    def video_thumbnail(self):
+    def thumbnail(self):
         if self.video_id:
             return f"https://img.youtube.com/vi/{self.video_id}/maxresdefault.jpg"
         return None
     
-    def video_metadata(self):
+    def metadata(self):
         ydl_opts = {"quiet": True, "no_warnings": True}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(self.url, download=False)
@@ -45,9 +44,13 @@ class YoutubeFetcher:
             }
         return metadata
 
-    def video_transcript(self):
-        fetched_data = self.api.fetch(self.video_id)
-        transcript_list = fetched_data.to_raw_data()
-
-        transcript_texts = [transcript["text"] for transcript in transcript_list]
-        return " ".join(transcript_texts)
+    def transcript(self):
+        try:
+            api = YouTubeTranscriptApi()
+            transcript_list = api.list(self.video_id)
+            transcript = next(iter(transcript_list))
+            data = transcript.fetch()
+            transcript_texts = " ".join([transcript.text for transcript in data])
+            return transcript_texts
+        except Exception:
+            return None
