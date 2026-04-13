@@ -1,4 +1,5 @@
 import streamlit as st
+import matplotlib.pyplot as plt
 
 def url_input():
     st.subheader("Youtube Link", text_alignment="center")
@@ -69,19 +70,18 @@ def cloud_viewer(cloud_image=None):
 
 def customize_panel():         
     st.subheader("Customization")
+    all_colormaps = plt.colormaps()
+    
     with st.container(border=True, height="stretch"):
         theme = st.selectbox(
-            "Color Palette",
-            options=["viridis", "plasma", "inferno", "magma", "cool", "spring"],
-            placeholder="Choose a color",
-            index=None,
+            "Color Palette", 
+            options=all_colormaps, 
+            index=all_colormaps.index("viridis")
         )
 
         shape = st.selectbox(
             "Shape Mask",
             options=["apple", "banana", "mango"],
-            placeholder="Choose a shape",
-            index=None,
         )
 
         bg_color = st.radio(
