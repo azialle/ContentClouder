@@ -3,6 +3,7 @@ from styles.page_config import page_config
 from components.display import url_input, cloud_viewer, customize_panel
 from components.video_preview import YTVideoPreview
 from engine.processor import TranscriptProcessor
+from engine.visualizer import CloudVisualizer
 
 page_config()
 
@@ -27,10 +28,16 @@ with center_col:
         st.divider()
         
         col1, col2 = st.columns([7, 3]) 
-        with col1:
-            cloud_viewer() 
         with col2:
             settings = customize_panel()
+        with col1:
+            if "transcript" in st.session_state and st.session_state["transcript"]:
+                visualizer = CloudVisualizer(st.session_state["transcript"], settings)
+                cloud_img = visualizer.generate()
+                cloud_viewer(cloud_img)
+            else:
+                cloud_viewer() 
+        
 
     if not url:
         st.session_state.pop("transcript", None)
