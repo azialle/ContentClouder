@@ -25,8 +25,10 @@ class CloudVisualizer:
             max_words=max_words,
             colormap=theme,
             stopwords=stopwords,
-            width=800,
-            height=400,
+            width=1600, 
+            height=1000,
+            prefer_horizontal=0.9,
+            scale=1.5,
             random_state=42,
             mode="RGBA" if bg == "none" else "RGB"
         ).generate(self.transcript)
