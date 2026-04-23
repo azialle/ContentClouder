@@ -51,8 +51,8 @@ def cloud_viewer(cloud_image=None):
             st.image(cloud_image, width="stretch")
             
             st.download_button(
-                label="💾 Download Word Cloud",
-                data=b"", 
+                label="Download Word Cloud",
+                data=cloud_image, 
                 file_name="content_cloud.png",
                 mime="image/png",
                 width="stretch"
@@ -70,13 +70,25 @@ def cloud_viewer(cloud_image=None):
 
 def customize_panel():         
     st.subheader("Customization")
-    all_colormaps = plt.colormaps()
+    all_colormaps = sorted(
+        [cmap for cmap in plt.colormaps() if cmap not in {"prism", "prism_r"}],
+        key=str.lower
+    )
+
+    def format_cmap(name):
+        is_reversed = name.endswith("_r")
+        display_name = name[:-2] if is_reversed else name
+        display_name = display_name.replace("_", " ")
+        if display_name.islower():
+            display_name = display_name.title()
+        return f"{display_name} (Reversed)" if is_reversed else display_name
     
     with st.container(border=True, height="stretch"):
         theme = st.selectbox(
             "Color Palette", 
             options=all_colormaps, 
-            index=all_colormaps.index("viridis")
+            index=all_colormaps.index("viridis"),
+            format_func=format_cmap
         )
 
         shape = st.selectbox(
@@ -90,19 +102,27 @@ def customize_panel():
             horizontal=True
         )
 
-        max_words = st.slider(
+        max_words = st.number_input(
             "Max Words",
             min_value=10,
-            max_value=500,
-            value=200,
+            max_value=250,
+            value=100,
             step=10
+        )
+
+        exclude_words = st.text_area(
+            label="Exclude Words",
+            placeholder="Add words to exclude from the cloud...",
+            height="stretch", 
+            help="Enter words to exclude, separated by commas or new lines."
         )
 
         settings = {
             "theme": theme,
             "shape": shape,
             "background": bg_color,
-            "max_words": max_words
+            "max_words": max_words,
+            "exclude_words": exclude_words
         }
         
         return settings
