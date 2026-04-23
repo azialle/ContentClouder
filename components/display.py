@@ -26,7 +26,7 @@ def video_preview(thumbnail_url, metadata):
             with st.container(border=True, width="stretch"):
                 col1, col2 = st.columns(2)
             with col1:
-                st.image(thumbnail_url, width="stretch")
+                st.image(thumbnail_url)
             with col2:
                 if metadata:
                     st.markdown(f"""
@@ -46,17 +46,9 @@ def video_preview(thumbnail_url, metadata):
 
 def cloud_viewer(cloud_image=None):
     st.subheader("Word Cloud Visualization")
-    with st.container(border=True):
+    with st.container(border=True, height="stretch"):
         if cloud_image is not None:
             st.image(cloud_image, width="stretch")
-            
-            st.download_button(
-                label="Download Word Cloud",
-                data=cloud_image, 
-                file_name="content_cloud.png",
-                mime="image/png",
-                width="stretch"
-            )
         else:
             st.markdown(
                 """
@@ -67,8 +59,7 @@ def cloud_viewer(cloud_image=None):
                 unsafe_allow_html=True
             )
 
-
-def customize_panel():         
+def customize_panel(cloud_image=None):         
     st.subheader("Customization")
     all_colormaps = sorted(
         [cmap for cmap in plt.colormaps() if cmap not in {"prism", "prism_r"}],
@@ -88,18 +79,21 @@ def customize_panel():
             "Color Palette", 
             options=all_colormaps, 
             index=all_colormaps.index("viridis"),
-            format_func=format_cmap
+            format_func=format_cmap,
+            key="theme_selector"
         )
 
         shape = st.selectbox(
             "Shape Mask",
             options=["apple", "banana", "mango"],
+            key="shape_selector"
         )
 
         bg_color = st.radio(
             "Background Color",
             options=["White", "Black"],
-            horizontal=True
+            horizontal=True,
+            key="bg_selector"
         )
 
         max_words = st.number_input(
@@ -107,15 +101,26 @@ def customize_panel():
             min_value=10,
             max_value=250,
             value=100,
-            step=10
+            step=10,
+            key="words_selector"
         )
 
         exclude_words = st.text_area(
             label="Exclude Words",
             placeholder="Add words to exclude from the cloud...",
             height="stretch", 
-            help="Enter words to exclude, separated by commas or new lines."
+            help="Enter words to exclude, separated by commas or new lines.",
+            key="exclude_input"
         )
+
+        if cloud_image is not None:
+            st.download_button(
+                label="Download Word Cloud",
+                data=cloud_image, 
+                file_name="content_cloud.png",
+                mime="image/png",
+                width="stretch"
+            )
 
         settings = {
             "theme": theme,
