@@ -5,40 +5,63 @@ from components.video_preview import YTVideoPreview
 from engine.processor import TranscriptProcessor
 from engine.visualizer import CloudVisualizer
 
+@st.cache_data(show_spinner=False)
+def get_cloud_image(transcript, settings_items):
+    visualizer = CloudVisualizer(transcript, dict(settings_items))
+    return visualizer.generate()
+
 page_config()
 
-left_gap, center_col, right_gap = st.columns([1, 5, 1])
+for key in ["cloud_img_data", "transcript", "video_info"]:
+    if key not in st.session_state: st.session_state[key] = None
 
-with center_col:
-    url, generate_btn = url_input()
-    if generate_btn and url:
-        video = YTVideoPreview(url)
-        with st.spinner("Fetching transcript..."):
-            transcript_data = video.transcript()
-            if transcript_data:
-                processor = TranscriptProcessor(transcript_data)
-                st.session_state["transcript"] = processor.clean()
-                st.session_state["video_info"] = video
-            else:
-                st.error("No transcript found.")
+with st.container(): 
+    _, center_col, _ = st.columns([1, 5, 1])
+    with center_col:
+        url, generate_btn = url_input()
+        
+        if not url:
+            st.session_state.update({"transcript": None, "video_info": None, "cloud_img_data": None})
+
+        if generate_btn and url:
+            video = YTVideoPreview(url)
+            with st.spinner("Processing..."):
+                transcript_data = video.transcript()
+                if transcript_data:
+                    st.session_state.update({
+                        "transcript": TranscriptProcessor(transcript_data).clean(),
+                        "video_info": video,
+                        "exclude_input": ""
+                    })
+                else:
+                    st.error("No transcript found.")
+
+        if st.session_state["video_info"]:
+            st.session_state["video_info"].show()
+            st.divider()
             
-    if "video_info" in st.session_state:
-        st.session_state["video_info"].show()
-        
-        st.divider()
-        
-        col1, col2 = st.columns([7, 3]) 
-        with col2:
-            settings = customize_panel()
-        with col1:
-            if "transcript" in st.session_state and st.session_state["transcript"]:
-                visualizer = CloudVisualizer(st.session_state["transcript"], settings)
-                cloud_img = visualizer.generate()
-                cloud_viewer(cloud_img)
-            else:
-                cloud_viewer() 
-        
+            current_settings = {
+                "theme": st.session_state.get("theme_selector", "viridis"),
+                "background": st.session_state.get("bg_selector", "White"),
+                "max_words": st.session_state.get("words_selector", 100),
+                "exclude_words": st.session_state.get("exclude_input", "")
+            }
+
+            st.session_state["cloud_img_data"] = get_cloud_image(
+                st.session_state["transcript"], 
+                tuple(current_settings.items())
+            )
+
+            col1, col2 = st.columns([7, 3]) 
+            with col2:
+                customize_panel(cloud_image=st.session_state["cloud_img_data"])
+            with col1:
+                cloud_viewer(st.session_state["cloud_img_data"])
 
     if not url:
-        st.session_state.pop("transcript", None)
-        st.session_state.pop("video_info", None)
+        st.session_state.update({
+            "transcript": None,
+            "video_info": None,
+            "cloud_img_data": None,
+            "last_settings": None 
+        })
