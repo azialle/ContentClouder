@@ -38,13 +38,13 @@ with st.container():
 
         if st.session_state["video_info"]:
             st.session_state["video_info"].show()
-            st.divider()
-            
+    
             current_settings = {
                 "theme": st.session_state.get("theme_selector", "viridis"),
                 "background": st.session_state.get("bg_selector", "White"),
                 "max_words": st.session_state.get("words_selector", 100),
-                "exclude_words": st.session_state.get("exclude_input", "")
+                "exclude_words": st.session_state.get("exclude_input", ""),
+                "shape": st.session_state.get("shape_selector", "None")
             }
 
             st.session_state["cloud_img_data"] = get_cloud_image(
