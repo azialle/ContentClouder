@@ -1,8 +1,8 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+import os
 
 def url_input():
-    st.subheader("Youtube Link", text_alignment="center")
     with st.container(border=True):
         col1, col2 = st.columns([3, 1], vertical_alignment="center")
         
@@ -17,54 +17,53 @@ def url_input():
         generate_btn = st.button("Generate", width="stretch")
     
     return url, generate_btn
-
-
 def video_preview(thumbnail_url, metadata):
-        st.subheader("Video Preview", text_alignment="center")
-        left_gap, center_col, right_gap = st.columns([1, 5, 1])
-        with center_col:
-            with st.container(border=True, width="stretch"):
-                col1, col2 = st.columns(2)
-            with col1:
-                st.image(thumbnail_url)
-            with col2:
-                if metadata:
-                    st.markdown(f"""
-                    <div class="preview-text-column">
-                        <div class="preview-title">{metadata["title"]}</div>
-                        <div class="preview-metadata">
-                            <b>Channel:</b> {metadata["channel"]} <br>
-                            <b>Duration:</b> {metadata["duration"]} <br>
-                            <b>Views:</b> {metadata["views"]:,} views <br>
-                            <b>Published:</b> {metadata["published_date"]}
-                        </div>
+    with st.container(border=True, width="stretch"):
+        col1, col2 = st.columns([1, 1.5])
+        with col1:
+            st.image(thumbnail_url)
+        with col2:
+            if metadata:
+                st.markdown(f"""
+                <div class="preview-text-column">
+                    <div class="preview-title">{metadata["title"]}</div>
+                    <div class="preview-metadata">
+                        <b>Channel:</b> {metadata["channel"]} <br>
+                        <b>Duration:</b> {metadata["duration"]} <br>
+                        <b>Views:</b> {metadata["views"]:,} views <br>
+                        <b>Published:</b> {metadata["published_date"]}
                     </div>
-                """, unsafe_allow_html=True)
-                else:
-                    st.warning("Metadata unavailable for this video.")
+                </div>
+            """, unsafe_allow_html=True)
+            else:
+                st.warning("Metadata unavailable for this video.")
+
 
 
 def cloud_viewer(cloud_image=None):
-    st.subheader("Word Cloud Visualization")
-    with st.container(border=True, height="stretch"):
+    with st.container(border=True, height=550, vertical_alignment="center"):
         if cloud_image is not None:
-            st.image(cloud_image, width="stretch")
-        else:
-            st.markdown(
-                """
-                <div class="word-cloud-placeholder">
-                    Your word cloud will appear here.
-                </div>
-                """, 
-                unsafe_allow_html=True
-            )
+            st.image(cloud_image)
+
+def _format_shape_name(name):
+    if name == "None":
+        return "Rectangle (Default)"
+    return name.replace("_", " ").title()
 
 def customize_panel(cloud_image=None):         
-    st.subheader("Customization")
     all_colormaps = sorted(
         [cmap for cmap in plt.colormaps() if cmap not in {"prism", "prism_r"}],
         key=str.lower
     )
+    IMG_DIR = os.path.join("assets", "img")
+    
+    if os.path.exists(IMG_DIR):
+        svg_files = [file.replace(".svg", "") for file in os.listdir(IMG_DIR) if file.endswith(".svg")]
+        svg_files.sort()
+    else:
+        svg_files = []
+
+    shape_options = ["None"] + svg_files
 
     def format_cmap(name):
         is_reversed = name.endswith("_r")
@@ -74,7 +73,7 @@ def customize_panel(cloud_image=None):
             display_name = display_name.title()
         return f"{display_name} (Reversed)" if is_reversed else display_name
     
-    with st.container(border=True, height="stretch"):
+    with st.container(border=True, height=550):
         theme = st.selectbox(
             "Color Palette", 
             options=all_colormaps, 
@@ -85,7 +84,8 @@ def customize_panel(cloud_image=None):
 
         shape = st.selectbox(
             "Shape Mask",
-            options=["apple", "banana", "mango"],
+            options=shape_options,
+            format_func=_format_shape_name,
             key="shape_selector"
         )
 
