@@ -21,7 +21,7 @@ class CloudVisualizer:
         shape_name = self.settings.get("shape", None)
       
         CANVAS_WIDTH = 1600
-        CANVAS_HEIGHT = 1000
+        CANVAS_HEIGHT = 1400
         mask_array = None
         
         if shape_name != "None":
