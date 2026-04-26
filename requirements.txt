@@ -5,3 +5,4 @@ nltk
 langdetect
 wordcloud
 matplotlib
+svgpath2mpl
