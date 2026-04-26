@@ -43,7 +43,7 @@ class TranscriptProcessor:
 
     def clean(self):
         if not self.transcript:
-            return ""
+            return {}
         
         text = self.transcript.lower()
         text = re.sub(r"\[.*?\]", "", text)
@@ -62,10 +62,7 @@ class TranscriptProcessor:
                 cleaned_list.append(word)
         
         if cleaned_list:
-            fdist = FreqDist(cleaned_list)
-            most_common_noise = {word for word, _ in fdist.most_common(3)}
-            final_list = [word for word in cleaned_list if word not in most_common_noise]
-            return " ".join(final_list)
+            return dict(FreqDist(cleaned_list))
         
-        return ""
+        return {}
         
