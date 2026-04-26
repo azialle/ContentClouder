@@ -19,9 +19,7 @@ def page_config():
     st.markdown(
         """
         <div class="app-description">
-            ContentClouder is a <b>Python-powered</b> web application that transforms lengthy 
-            YouTube videos into intuitive word cloud visualizations, allowing users to grasp the 
-            core themes of a transcript in seconds.
+            Generate Wordcloud from Youtube Videos.
         </div>
         """, 
         unsafe_allow_html=True
