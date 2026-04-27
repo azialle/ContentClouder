@@ -18,9 +18,9 @@ def page_config():
     
     st.markdown(
         """
-        <div class="app-description">
-            Generate Wordcloud from Youtube Videos.
-        </div>
+        <p class="app-description">
+            Generate Wordcloud from Youtube Videos
+        </p>
         """, 
         unsafe_allow_html=True
     )
