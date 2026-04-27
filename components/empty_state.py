@@ -11,7 +11,7 @@ def show_feature_highlights():
                 <div class="feature-icon">🔗</div>
                 <div class="feature-title">Extract</div>
                 <div class="feature-desc">
-                    Paste a YouTube URL to retrieve the transcript and begin your analysis.
+                    Paste a YouTube URL to retrieve the full transcript.
                 </div>
             </div>
         """, unsafe_allow_html=True)
