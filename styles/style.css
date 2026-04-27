@@ -35,20 +35,20 @@
 
 .feature-container {
   text-align: center;
-  padding: 20px;
+  padding: 30px;
   transition: transform 0.3s ease;
 }
 
 .feature-icon {
   font-size: 3rem;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
 
 .feature-title {
   font-size: 1.2rem;
   font-weight: 700;
   color: #ffffff;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
 }
 
 .feature-desc {

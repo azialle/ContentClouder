@@ -10,7 +10,9 @@ def show_feature_highlights():
             <div class="feature-container">
                 <div class="feature-icon">🔗</div>
                 <div class="feature-title">Extract</div>
-                <div class="feature-desc">Paste any YouTube URL. We'll fetch the transcript and prepare the text for analysis.</div>
+                <div class="feature-desc">
+                    Paste a YouTube URL to retrieve the transcript and begin your analysis.
+                </div>
             </div>
         """, unsafe_allow_html=True)
 
@@ -19,7 +21,9 @@ def show_feature_highlights():
             <div class="feature-container">
                 <div class="feature-icon">☁️</div>
                 <div class="feature-title">Visualize</div>
-                <div class="feature-desc">Generate a high-resolution word cloud highlighting the most frequent terms.</div>
+                <div class="feature-desc">
+                    Generate a high-resolution word cloud highlighting key topics of the video.
+                </div>
             </div>
         """, unsafe_allow_html=True)
         
@@ -29,8 +33,7 @@ def show_feature_highlights():
                 <div class="feature-icon">🪄</div>
                 <div class="feature-title">Refine</div>
                 <div class="feature-desc">
-                    Customize the color palette, shape, and word count. 
-                    Even exclude specific words to make the cloud truly yours.
+                    Customize themes, shapes, and filter keywords to visualize exactly what you need.
                 </div>
             </div>
         """, unsafe_allow_html=True)
