@@ -1,6 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import os
+import pandas as pd
 
 def url_input():
     with st.container(border=True):
@@ -17,6 +18,8 @@ def url_input():
         generate_btn = st.button("Generate", width="stretch")
     
     return url, generate_btn
+
+
 def video_preview(thumbnail_url, metadata):
     with st.container(border=True, width="stretch"):
         col1, col2 = st.columns([1, 1.5])
@@ -39,7 +42,6 @@ def video_preview(thumbnail_url, metadata):
                 st.warning("Metadata unavailable for this video.")
 
 
-
 def cloud_viewer(cloud_image=None):
     with st.container(border=True, height=550, vertical_alignment="center"):
         if cloud_image is not None:
@@ -47,7 +49,7 @@ def cloud_viewer(cloud_image=None):
 
 def _format_shape_name(name):
     if name == "None":
-        return "Rectangle (Default)"
+        return "Square"
     return name.replace("_", " ").title()
 
 def customize_panel(cloud_image=None):         
@@ -131,3 +133,45 @@ def customize_panel(cloud_image=None):
         }
         
         return settings
+
+def main_dashboard(transcript, cloud_img_data, get_cloud_image, get_filtered_transcript):
+    col1, col2 = st.columns([7, 3]) 
+    with col2:
+        current_settings = customize_panel(cloud_img_data)
+    
+    settings_tuple = tuple(current_settings.items())
+    
+    updated_cloud_data = get_cloud_image(transcript, settings_tuple)
+    filtered_data = get_filtered_transcript(transcript, settings_tuple)
+    
+    with col1:
+        cloud_viewer(updated_cloud_data)
+
+    if filtered_data:
+        df = pd.DataFrame(
+            list(filtered_data.items()), 
+            columns=["Word", "Frequency"]
+        ).sort_values(by="Frequency", ascending=False).reset_index(drop=True)
+        
+        total_words = df["Frequency"].sum()
+        df["Percentage"] = (df["Frequency"] / total_words) * 100
+        
+        with st.container(border=True):
+            st.dataframe(
+                df, 
+                hide_index=True,
+                width="stretch",
+                height=300,
+                column_config={
+                    "Frequency": st.column_config.NumberColumn(
+                        format="%d",
+                        alignment="left"
+                    ),
+                    "Percentage": st.column_config.ProgressColumn(
+                        format="%.1f%%",
+                        min_value=0,
+                        max_value=df["Percentage"].max() if not df.empty else 100
+                    )
+                }
+            )
+    return updated_cloud_data, current_settings
