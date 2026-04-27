@@ -6,3 +6,4 @@ langdetect
 wordcloud
 matplotlib
 svgpath2mpl
+pandas
