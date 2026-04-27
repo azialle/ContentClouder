@@ -7,15 +7,15 @@ def url_input():
     with st.container(border=True):
         col1, col2 = st.columns([3, 1], vertical_alignment="center")
         
-    with col1:
-        url = st.text_input(
-            "Paste your YouTube URL here:", 
-            label_visibility="collapsed",
-            placeholder="Paste your YouTube URL here..."
-        )
+        with col1:
+            url = st.text_input(
+                "Paste your YouTube URL here:", 
+                label_visibility="collapsed",
+                placeholder="Paste your YouTube URL here..."
+            )
 
-    with col2:
-        generate_btn = st.button("Generate", width="stretch")
+        with col2:
+            generate_btn = st.button("Generate", width="stretch")
     
     return url, generate_btn
 
@@ -133,6 +133,7 @@ def customize_panel(cloud_image=None):
         }
         
         return settings
+
 
 def main_dashboard(transcript, cloud_img_data, get_cloud_image, get_filtered_transcript):
     col1, col2 = st.columns([7, 3]) 
