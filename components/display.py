@@ -43,7 +43,7 @@ def video_preview(thumbnail_url, metadata):
 
 
 def cloud_viewer(cloud_image=None):
-    with st.container(border=True, height=550, vertical_alignment="center"):
+    with st.container(border=True, vertical_alignment="center"):
         if cloud_image is not None:
             st.image(cloud_image)
 
