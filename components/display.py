@@ -52,7 +52,7 @@ def _format_shape_name(name):
         return "Square"
     return name.replace("_", " ").title()
 
-def customize_panel(cloud_image=None):         
+def customize_panel(transcript, get_cloud_image):         
     all_colormaps = sorted(
         [cmap for cmap in plt.colormaps() if cmap not in {"prism", "prism_r"}],
         key=str.lower
@@ -115,6 +115,17 @@ def customize_panel(cloud_image=None):
             key="exclude_input"
         )
 
+        settings = {
+            "theme": theme,
+            "shape": shape,
+            "background": bg_color,
+            "max_words": max_words,
+            "exclude_words": exclude_words
+        }
+
+        settings_tuple = tuple(settings.items())
+        cloud_image = get_cloud_image(transcript, settings_tuple)
+
         if cloud_image is not None:
             st.download_button(
                 label="Download Word Cloud",
@@ -123,26 +134,16 @@ def customize_panel(cloud_image=None):
                 mime="image/png",
                 width="stretch"
             )
-
-        settings = {
-            "theme": theme,
-            "shape": shape,
-            "background": bg_color,
-            "max_words": max_words,
-            "exclude_words": exclude_words
-        }
         
-        return settings
+        return settings, cloud_image
 
 
-def main_dashboard(transcript, cloud_img_data, get_cloud_image, get_filtered_transcript):
+def main_dashboard(transcript, get_cloud_image, get_filtered_transcript):
     col1, col2 = st.columns([7, 3]) 
     with col2:
-        current_settings = customize_panel(cloud_img_data)
+        current_settings, updated_cloud_data = customize_panel(transcript, get_cloud_image)
     
     settings_tuple = tuple(current_settings.items())
-    
-    updated_cloud_data = get_cloud_image(transcript, settings_tuple)
     filtered_data = get_filtered_transcript(transcript, settings_tuple)
     
     with col1:
@@ -175,4 +176,5 @@ def main_dashboard(transcript, cloud_img_data, get_cloud_image, get_filtered_tra
                     )
                 }
             )
+
     return updated_cloud_data, current_settings

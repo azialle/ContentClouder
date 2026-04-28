@@ -47,7 +47,6 @@ with st.container():
             
             st.session_state["cloud_img_data"], _ = main_dashboard(
                 st.session_state["transcript"], 
-                st.session_state["cloud_img_data"],
                 get_cloud_image,
                 get_filtered_transcript
             )
