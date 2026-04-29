@@ -43,7 +43,7 @@ def video_preview(thumbnail_url, metadata):
 
 
 def cloud_viewer(cloud_image=None):
-    with st.container(border=True, vertical_alignment="center"):
+    with st.container(border=True, height="stretch", vertical_alignment="center"):
         if cloud_image is not None:
             st.image(cloud_image)
 
@@ -75,7 +75,7 @@ def customize_panel(transcript, get_cloud_image):
             display_name = display_name.title()
         return f"{display_name} (Reversed)" if is_reversed else display_name
     
-    with st.container(border=True, height=550):
+    with st.container(border=True, height="stretch"):
         theme = st.selectbox(
             "Color Palette", 
             options=all_colormaps, 
