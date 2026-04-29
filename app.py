@@ -1,7 +1,7 @@
 import streamlit as st
 from styles.page_config import page_config
 from components.display import url_input, main_dashboard
-from components.empty_state import show_feature_highlights
+from components.features import show_feature_highlights
 from components.video_preview import YTVideoPreview
 from engine.processor import TranscriptProcessor
 from engine.visualizer import CloudVisualizer
