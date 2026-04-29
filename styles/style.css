@@ -7,6 +7,7 @@
   text-align: center !important;
   width: 100%;
   margin-bottom: -5px !important;
+  white-space: nowrap !important;
 }
 
 .title-accent {
@@ -31,6 +32,34 @@
   text-align: center !important;
   margin-top: -10px !important;
   margin-bottom: 40px !important;
+}
+
+@media (max-width: 768px) {
+  .title-accent,
+  .title-main {
+    font-size: 3.8rem !important;
+  }
+  .title-container {
+    margin-bottom: -3px !important;
+  }
+  .app-description {
+    font-size: 1rem !important;
+    margin-bottom: 25px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .title-accent,
+  .title-main {
+    font-size: 2.8rem !important;
+  }
+  .title-container {
+    margin-bottom: 1px !important;
+  }
+  .app-description {
+    font-size: 0.8rem !important;
+    margin-bottom: 15px !important;
+  }
 }
 
 .feature-container {
